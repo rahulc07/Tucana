@@ -1,0 +1,11 @@
+#!/bin/bash
+REPO=http://192.168.1.143:88
+INSTALL_PATH=/
+
+mkdir -p $INSTALL_PATH/var/cache/mercury/depend
+
+cd $INSTALL_PATH/var/cache/mercury/depend
+
+
+wget -r -nH --cut-dirs=2 --no-parent --reject="index.html*" $REPO/depend
+

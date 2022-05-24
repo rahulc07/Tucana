@@ -1,0 +1,98 @@
+#!/bin/bash
+REPO="http://192.168.1.143:88"
+INSTALL_PATH=/
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+remove_word() (
+  set -f
+  IFS=' '
+
+  s=$1
+  w=$2
+
+  set -- $1
+  for arg do
+    shift
+    [ "$arg" = "$w" ] && continue
+    set -- "$@" "$arg"
+  done
+
+  packages="$*"  
+)
+
+install_package() {
+    local PACKAGE=$1
+    if cat $INSTALL_PATH/etc/installed_package | grep -x $PACKAGE; then
+        echo "$PACKAGE is already installed, skipping"
+        return 1
+    else
+        mkdir -p $INSTALL_PATH/var/cache/mercury
+        cd $INSTALL_PATH/var/cache/mercury
+        echo "$REPO/packages/$PACKAGE.tar.xz"
+        echo "Downloading $PACKAGE"
+
+        wget -O $INSTALL_PATH/var/cache/mercury/$PACKAGE.tar.xz $REPO/packages/$PACKAGE.tar.xz
+
+        echo "Installing $PACKAGE..."
+        echo "Extracting $PACKAGE..."
+        tar -xpf $PACKAGE.tar.xz
+
+        echo "Copying contents..."
+        cp -rp $PACKAGE/* $INSTALL_PATH
+
+        echo "Running Post Install Script..."
+       # bash $PACKAGE/postinst
+
+        echo $PACKAGE >> $INSTALL_PATH/etc/installed_package
+        echo  "Removing Cache"
+        rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
+    fi
+}
+packages=$@
+current=0
+
+echo "Getting Dependencies"
+until [ $current -gt 7 ] 
+do
+ for package in ${packages[@]}
+ do
+     packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
+     packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+ done
+ ((current++))
+done
+
+packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
+
+
+numpackage=$(wc -w <<< $packages)
+pkgnoline=$(tr "\n" " " <<< $packages)
+
+if test $numpackage -ne 0; then
+ printf "\n\nPackages to be installed: $pkgnoline\n"
+ read -r -p "$numpackage packages are queued to install, would you like to continue? [Y/n] " confirmation
+
+ case $confirmation in
+      "" | Y | y)
+  echo "Continuing with install of $numpackage packages"
+  for package in ${packages[@]}
+  do
+      install_package "$package"
+  done
+
+  ;;
+   *)
+  echo "Aborting Invalid Input!"
+  ;;
+ esac
+ else 
+  echo $numpackage
+  printf "\n\nNothing to do all packages are installed\n"
+fi
+
+
