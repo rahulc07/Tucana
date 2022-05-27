@@ -1,12 +1,12 @@
 #!/bin/bash
-REPO="http://192.168.1.143:88"
+REPO="REPO GOES HERE"
 INSTALL_PATH=/mnt
 
 # This is only meant to be used for the installatiojn of the base system and chroot, the base system in the mercury tar ships with a slightly different version
 # That version has the installation path as / and the base postinst line uncommented
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   echo "Mercury must be run as root" 
    exit 1
 fi
 
