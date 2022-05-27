@@ -10,5 +10,5 @@ This distro uses the Mercury Package manager (WIP not released yet) it is entire
 This is a STABLE distro, it will update every 6 months 1 month before ubuntu (along with new LFS stable releases).  But some packages will NOT be locked.  Mainly Firefox, Chromium, The Kernel (LTS is avalible) and Mesa.  
 
 # MAJOR WIP
-I will release whatever I have right now including my build script for the packages.  At the end I hope for a console and GUI based livecd that can be used to install it.  Right now, the LFS.tar.xz contains the full system, chroot in and install grub (efi is supported) and whatever packages you want just untar them in / (yes I know its dangerous but it works, if you want a safe option untar them somewhere else and do a cp -rp to /)  there is a depend file with most of the majpr depends
+I will release whatever I have right now including my build script for the packages.  At the end I hope for a console and GUI based livecd that can be used to install it.  Check the wiki for install instructions
 
