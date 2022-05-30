@@ -1,5 +1,5 @@
 #!/bin/bash
-REPO="https://picraft.gq"
+REPO="REPO GOES HERE"
 INSTALL_PATH=/mnt
 
 # This is only meant to be used for the installatiojn of the base system and chroot, the base system in the mercury tar ships with a slightly different version
