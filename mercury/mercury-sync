@@ -1,5 +1,5 @@
 #!/bin/bash
-REPO=https://picraft.gq
+REPO=REPO GOES HERE
 INSTALL_PATH=/mnt
 
 #This is modified for chroot and base intstall, if you are reinstalling mercury change the INSTALL_PATH variable
