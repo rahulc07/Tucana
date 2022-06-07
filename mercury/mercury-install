@@ -1,28 +1,12 @@
 #!/bin/bash
 REPO="http://192.168.1.143:88"
-INSTALL_PATH=/
+INSTALL_PATH=/mnt
+#Version 1.0-Prerelease2
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   echo "This package manager must be run as root" 
    exit 1
 fi
-
-remove_word() (
-  set -f
-  IFS=' '
-
-  s=$1
-  w=$2
-
-  set -- $1
-  for arg do
-    shift
-    [ "$arg" = "$w" ] && continue
-    set -- "$@" "$arg"
-  done
-
-  packages="$*"  
-)
 
 install_package() {
     local PACKAGE=$1
@@ -43,10 +27,11 @@ install_package() {
 
         echo "Copying contents..."
         cp -rp $PACKAGE/* $INSTALL_PATH
-
-        echo "Running Post Install Script..."
-       # bash $PACKAGE/postinst
-
+        #Check if postinst exists
+         if [ -f $PACKAGE/postinst ]; then
+            echo "Running Post Install Script..."
+            # bash $PACKAGE/postinst 
+         fi
         echo $PACKAGE >> $INSTALL_PATH/etc/installed_package
         echo  "Removing Cache"
         rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
@@ -55,24 +40,61 @@ install_package() {
 packages=$@
 current=0
 
-echo "Getting Dependencies"
-until [ $current -gt 7 ] 
+for package in ${packages[@]}
 do
- for package in ${packages[@]}
- do
-     packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
-     packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
- done
- ((current++))
+   if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
+   then
+	   echo "$package was not found, exiting"
+	   exit 1
+   fi
 done
 
+
+echo "Getting Dependencies"
+until [ "$packages" == "$packageold" ] 
+do
+ packageold=$packages
+ for package in ${packages[@]}
+ do
+     if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+	     :
+     else
+         packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
+         packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+     fi
+ done
+ ((current++))
+# echo $current
+done
+
+#Get rid of repeats (also in depend check)
 packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+#Take the mutliline packages bariable and convert it to a single line
 packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
 
 
 numpackage=$(wc -w <<< $packages)
+#Basically the same thing but just for safety lol
 pkgnoline=$(tr "\n" " " <<< $packages)
 
+#Sanity check to make sure that all packages exist (Same as above)
+for package in ${packages[@]}
+do
+   if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
+   then
+	   echo "$package was not found, exiting"
+	   exit 1
+   fi
+done
+
+#Sanity check to make sure that the root package is not already installed
+#echo $numpackage
+#if [[ numpackage == 1 ]]; then
+#	if cat $INSTALL_PATH/etc/installed_package | grep -x $packages; then
+#		echo "All packages have been installed"
+#		exit 0
+#	fi
+#fi
 if test $numpackage -ne 0; then
  printf "\n\nPackages to be installed: $pkgnoline\n"
  read -r -p "$numpackage packages are queued to install, would you like to continue? [Y/n] " confirmation

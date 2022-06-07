@@ -1,11 +1,11 @@
 #!/bin/bash
 REPO=http://192.168.1.143:88
-INSTALL_PATH=/
+INSTALL_PATH=/mnt
 
-mkdir -p $INSTALL_PATH/var/cache/mercury/depend
-
+mkdir -p $INSTALL_PATH/var/cache/mercury/depend $INSTALL_PATH/etc
+touch $INSTALL_PATH/etc/installed_package
 cd $INSTALL_PATH/var/cache/mercury/depend
-
-
-wget -r -nH --cut-dirs=2 --no-parent --reject="index.html*" $REPO/depend
+wget $REPO/available-packages/packages -O $INSTALL_PATH/var/cache/mercury/available-packages
+echo "Getting dependency files from repo"
+wget -q -r -nH --cut-dirs=2 --no-parent --reject="index.html*" $REPO/depend
 
