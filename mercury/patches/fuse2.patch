@@ -1,0 +1,42 @@
+diff --color -Naur fuse-2.9.9/configure.ac fuse-2.9.9-patched/configure.ac
+--- fuse-2.9.9/configure.ac	2019-01-04 08:37:03.000000000 -0500
++++ fuse-2.9.9-patched/configure.ac	2022-06-03 23:42:53.488104331 -0400
+@@ -55,6 +55,7 @@
+ 
+ AC_CHECK_FUNCS([fork setxattr fdatasync splice vmsplice utimensat])
+ AC_CHECK_FUNCS([posix_fallocate])
++AC_CHECK_FUNCS([closefrom])
+ AC_CHECK_MEMBERS([struct stat.st_atim])
+ AC_CHECK_MEMBERS([struct stat.st_atimespec])
+ 
+diff --color -Naur fuse-2.9.9/util/ulockmgr_server.c fuse-2.9.9-patched/util/ulockmgr_server.c
+--- fuse-2.9.9/util/ulockmgr_server.c	2019-01-04 08:33:33.000000000 -0500
++++ fuse-2.9.9-patched/util/ulockmgr_server.c	2022-06-03 23:44:17.040454288 -0400
+@@ -22,6 +22,10 @@
+ #include <sys/socket.h>
+ #include <sys/wait.h>
+ 
++#ifdef HAVE_CONFIG_H
++	#include "config.h"
++#endif
++
+ struct message {
+ 	unsigned intr : 1;
+ 	unsigned nofd : 1;
+@@ -124,6 +128,7 @@
+ 	return res;
+ }
+ 
++#if !defined(HAVE_CLOSEFROM)
+ static int closefrom(int minfd)
+ {
+ 	DIR *dir = opendir("/proc/self/fd");
+@@ -141,7 +146,7 @@
+ 	}
+ 	return 0;
+ }
+-
++#endif
+ static void send_reply(int cfd, struct message *msg)
+ {
+ 	int res = send(cfd, msg, sizeof(struct message), MSG_NOSIGNAL);
