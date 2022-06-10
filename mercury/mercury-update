@@ -1,0 +1,77 @@
+#!/bin/bash
+REPO="http://192.168.1.143:88"
+INSTALL_PATH=/mnt
+# Version 1.0-Prerelease 4
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This package manager must be run as root" 
+   exit 1
+fi
+
+update_package() {
+    local PACKAGE=$1
+        cd $INSTALL_PATH/var/cache/mercury
+        echo "$REPO/packages/$PACKAGE.tar.xz"
+        echo "Downloading $PACKAGE"
+
+        wget -O $INSTALL_PATH/var/cache/mercury/$PACKAGE.tar.xz $REPO/packages/$PACKAGE.tar.xz
+
+        echo "Updating $PACKAGE..."
+        echo "Extracting $PACKAGE..."
+        tar -xpf $PACKAGE.tar.xz
+
+        echo "Copying contents..."
+        cp -rp $PACKAGE/* $INSTALL_PATH
+        #Check if postinst exists
+         if [ -f $PACKAGE/postinst ]; then
+            echo "Running Post Install Script..."
+            bash $PACKAGE/postinst 
+         fi
+        echo  "Removing Cache"
+        rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
+}
+# Get all the available updates
+updates=$(diff $INSTALL_PATH/var/cache/mercury/current $INSTALL_PATH/var/cache/mercury/sha256|grep ">"|cut -c 3- | cut -c67- | sed 's|.tar.xz||g')
+
+# Organize the updates to make sure that only packages that are installed are updated 
+
+updates=$(echo "$updates" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
+for package in ${updates[@]}
+do
+  if cat $INSTALL_PATH/etc/installed_package | grep -x $package; then
+     updates_curated="$updates_curated $package"
+  fi
+done
+
+# Sanity check to make sure that there are actually updates avaliable
+numupdate=$(wc -w <<< $updates_curated)
+if [[ $numupdate == 0 ]]; then
+   echo "No updates found, try to sync"
+   exit 0
+fi
+ 
+
+
+# Install the updates
+
+echo "Packages to be updated $updates_curated"
+ read -r -p "Would you like to continue? [Y/n] " confirmation
+
+case $confirmation in
+     "" | Y | y)
+ echo "Continuing with install of $numpackage packages"
+ for package in ${updates_curated[@]}; do
+    update_package "$package"
+ done
+ cp -v $INSTALL_PATH/var/cache/mercury/sha256  $INSTALL_PATH/var/cache/mercury/current
+
+ ;;
+     *)
+ echo "Aborting Invalid Input!"
+ ;;
+esac
+
+
+
+  
+  
