@@ -1,1 +1,126 @@
-/home/UserShare/mercury/mercury-install
+#!/bin/bash
+REPO="http://192.168.1.143:88"
+INSTALL_PATH=/home/rahul/lfs/live/squashfs-root
+packages=$@
+# Built For Tucana Version 1.0
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This package manager must be run as root" 
+   exit 1
+fi
+
+install_package() {
+    local PACKAGE=$1
+    if cat $INSTALL_PATH/etc/installed_package | grep -x $PACKAGE; then
+        echo "$PACKAGE is already installed, skipping"
+        return 1
+    else
+        mkdir -p $INSTALL_PATH/var/cache/mercury
+        cd $INSTALL_PATH/var/cache/mercury
+        echo "$REPO/packages/$PACKAGE.tar.xz"
+        echo "Downloading $PACKAGE"
+
+        wget -O $INSTALL_PATH/var/cache/mercury/$PACKAGE.tar.xz $REPO/packages/$PACKAGE.tar.xz
+
+        echo "Installing $PACKAGE..."
+        echo "Extracting $PACKAGE..."
+        tar -xpf $PACKAGE.tar.xz
+
+        echo "Copying contents..."
+        cp -rp $PACKAGE/* $INSTALL_PATH
+        #Check if postinst exists
+         if [ -f $PACKAGE/postinst ]; then
+            echo "Running Post Install Script..."
+            # bash $PACKAGE/postinst 
+         fi
+        echo $PACKAGE >> $INSTALL_PATH/etc/installed_package
+        echo  "Removing Cache"
+        rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
+    fi
+}
+
+get_depends() {
+
+echo "Getting Dependencies"
+until [ "$packages" == "$packageold" ] 
+do
+ packageold=$packages
+ for package in ${packages[@]}
+ do
+     if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+	 packages=$(echo $packages | sed "s/$package//")
+     else
+         packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
+         packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+     fi
+ done
+done
+
+# Get rid of repeats (also in depend check)
+packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+# Take the mutliline packages variable and convert it to a single line
+packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
+
+# Remove any already installed packages
+for package in ${packages[@]}
+do
+   if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+     packages=$(echo $packages | sed "s/\ $packages\ /\ /"
+   fi
+done
+
+}
+
+
+# Make sure the root (actually inputed packages) exist, this check is repeated for the depends (I mess up some times)
+for package in ${packages[@]}
+do
+   if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
+   then
+	   echo "$package was not found, exiting"
+	   exit 1
+   fi
+done
+
+# Run the depends function
+get_depends
+
+
+
+numpackage=$(wc -w <<< $packages)
+#Basically the same thing but just for safety lol
+pkgnoline=$(tr "\n" " " <<< $packages)
+
+#Sanity check to make sure that all packages exist (Same as above)
+for package in ${packages[@]}
+do
+   if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
+   then
+	   echo "$package was not found, exiting"
+	   exit 1
+   fi
+done
+
+
+if test $numpackage -ne 0; then
+ printf "\n\nPackages to be installed: $pkgnoline\n"
+ read -r -p "$numpackage packages are queued to install, would you like to continue? [Y/n] " confirmation
+
+ case $confirmation in
+      "" | Y | y)
+  echo "Continuing with install of $numpackage packages"
+  for package in ${packages[@]}
+  do
+      install_package "$package"
+  done
+
+  ;;
+   *)
+  echo "Aborting Invalid Input!"
+  ;;
+ esac
+ else 
+  printf "\n\nNothing to do all packages are installed\n"
+fi
+
+
