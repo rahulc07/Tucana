@@ -1,21 +1,23 @@
 #!/bin/bash
 REPO=http://192.168.1.143:88
-INSTALL_PATH=/mnt
+INSTALL_PATH=/
 
 mkdir -p $INSTALL_PATH/var/cache/mercury/depend $INSTALL_PATH/etc
 touch $INSTALL_PATH/etc/installed_package
 cd $INSTALL_PATH/var/cache/mercury/depend
 echo "Getting Available Packages"
-wget $REPO/available-packages/packages -O $INSTALL_PATH/var/cache/mercury/available-packages
+wget -q $REPO/available-packages/packages -O $INSTALL_PATH/var/cache/mercury/available-packages
 echo "Getting dependency files from repo"
-wget -q -r -nH --cut-dirs=2 --no-parent --reject="index.html*" $REPO/depend
+wget -q $REPO/depend/depends.tar.xz -O $INSTALL_PATH/var/cache/mercury/depend/depends.tar.xz
+cd $INSTALL_PATH/var/cache/mercury/depend 
+tar -xf depends.tar.xz
 echo "Getting Updatable Packages"
 if [ ! -f $INSTALL_PATH/var/cache/mercury/current ]; then
-   wget $REPO/available-packages/sha256 -O $INSTALL_PATH/var/cache/mercury/current
+   wget -q $REPO/available-packages/sha256 -O $INSTALL_PATH/var/cache/mercury/current
    sudo cp $INSTALL_PATH/var/cache/mercury/current $INSTALL_PATH/var/cache/mercury/sha256
 else
-   wget $REPO/available-packages/sha256 -O $INSTALL_PATH/var/cache/mercury/sha256
-   numpkg=diff $INSTALL_PATH/var/cache/mercury/sha256 $INSTALL_PATH/var/cache/mercury/current|grep ">"|cut -c 3- | cut -c67- foo.txt | sed 's|.tar.xz||g' | wc -l
+   wget -q $REPO/available-packages/sha256 -O $INSTALL_PATH/var/cache/mercury/sha256
+   numpkg=$(diff $INSTALL_PATH/var/cache/mercury/sha256 $INSTALL_PATH/var/cache/mercury/current|grep ">"|cut -c 3- | cut -c67- | sed 's|.tar.xz||g' | wc -l)
    echo "$numpkg packages can be updated"
 fi
 
