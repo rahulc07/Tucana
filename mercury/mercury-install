@@ -65,7 +65,7 @@ packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2
 for package in ${packages[@]}
 do
    if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
-     packages=$(echo $packages | sed "s/\ $package\ /\ /"
+     packages=$(echo $packages | sed "s/\ $package\ /\ /")
    fi
 done
 
