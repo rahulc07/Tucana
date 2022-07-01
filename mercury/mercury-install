@@ -1,7 +1,8 @@
 #!/bin/bash
 REPO="http://192.168.1.143:88"
-INSTALL_PATH=/mnt
-#Version 1.0-Prerelease2
+INSTALL_PATH=/home/rahul/lfs/live/squashfs-root
+packages=$@
+# Built For Tucana Version 1.0
 
 if [[ $EUID -ne 0 ]]; then
    echo "This package manager must be run as root" 
@@ -37,9 +38,41 @@ install_package() {
         rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
     fi
 }
-packages=$@
-current=0
 
+get_depends() {
+
+echo "Getting Dependencies"
+until [ "$packages" == "$packageold" ] 
+do
+ packageold=$packages
+ for package in ${packages[@]}
+ do
+     if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+	 packages=$(echo $packages | sed "s/$package//"
+     else
+         packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
+         packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+     fi
+ done
+done
+
+# Get rid of repeats (also in depend check)
+packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+# Take the mutliline packages variable and convert it to a single line
+packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
+
+# Remove any already installed packages
+for package in ${packages[@]}
+do
+   if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+     packages=$(echo $packages | sed "s/\ $packages\ /\ /"
+   fi
+done
+
+}
+
+
+# Make sure the root (actually inputed packages) exist, this check is repeated for the depends (I mess up some times)
 for package in ${packages[@]}
 do
    if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
@@ -49,28 +82,9 @@ do
    fi
 done
 
+# Run the depends function
+get_depends
 
-echo "Getting Dependencies"
-until [ "$packages" == "$packageold" ] 
-do
- packageold=$packages
- for package in ${packages[@]}
- do
-     if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
-	     :
-     else
-         packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
-         packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
-     fi
- done
- ((current++))
-# echo $current
-done
-
-#Get rid of repeats (also in depend check)
-packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
-#Take the mutliline packages bariable and convert it to a single line
-packages=$(echo "$packages" | tr ' ' '\n' | nl | sort -u -k2 | sort -n | cut -f2-) 
 
 
 numpackage=$(wc -w <<< $packages)
@@ -87,14 +101,7 @@ do
    fi
 done
 
-#Sanity check to make sure that the root package is not already installed
-#echo $numpackage
-#if [[ numpackage == 1 ]]; then
-#	if cat $INSTALL_PATH/etc/installed_package | grep -x $packages; then
-#		echo "All packages have been installed"
-#		exit 0
-#	fi
-#fi
+
 if test $numpackage -ne 0; then
  printf "\n\nPackages to be installed: $pkgnoline\n"
  read -r -p "$numpackage packages are queued to install, would you like to continue? [Y/n] " confirmation
@@ -113,7 +120,6 @@ if test $numpackage -ne 0; then
   ;;
  esac
  else 
-  echo $numpackage
   printf "\n\nNothing to do all packages are installed\n"
 fi
 
