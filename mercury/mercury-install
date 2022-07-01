@@ -48,7 +48,7 @@ do
  for package in ${packages[@]}
  do
      if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
-	 packages=$(echo $packages | sed "s/$package//")
+	 :
      else
          packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
          packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
