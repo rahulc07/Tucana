@@ -1,6 +1,6 @@
 #!/bin/bash
 REPO=http://192.168.1.143:88
-INSTALL_PATH=/
+INSTALL_PATH=/mnt
 # Build For Tucana Version 1.0
 mkdir -p $INSTALL_PATH/var/cache/mercury/depend $INSTALL_PATH/etc
 touch $INSTALL_PATH/etc/installed_package
