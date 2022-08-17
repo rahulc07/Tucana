@@ -2,12 +2,33 @@
 REPO="http://192.168.1.143:88"
 INSTALL_PATH=/mnt
 packages=$@
-# Built For Tucana Version 1.0
+# Built For Tucana Version 1.1
+# DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO_PATH  and uncommeting line 56 
 
 if [[ $EUID -ne 0 ]]; then
    echo "This package manager must be run as root" 
    exit 1
 fi
+
+move() {
+   # This function is so that if packages or files have to be overwriten, the system does not crash while doing it, mostly for updating 
+   local folpath=$1
+   local files
+   local folders
+
+   
+   cd $folpath
+   
+   folders=$(find . -type d | tail -n +2 | cut -c2- | sed "s|^|$INSTALL_PATH|" | tr "\n" " ")
+
+   mkdir -p $folders
+
+   files=$(find . -type f ! -name 'postinst')
+   
+   for file in $files; do
+       mv  $file $(echo $file | cut -c2- | sed "s|^|$INSTALL_PATH|g")
+   done
+}
 
 install_package() {
     local PACKAGE=$1
@@ -28,7 +49,8 @@ install_package() {
         tar -xpf $PACKAGE.tar.xz
 
         echo "Copying contents..."
-        cp -rp $PACKAGE/* $INSTALL_PATH
+        # Check the move function for details
+        move "$PACKAGE"
         #Check if postinst exists
          if [ -f $PACKAGE/postinst ]; then
             echo "Running Post Install Script..."
