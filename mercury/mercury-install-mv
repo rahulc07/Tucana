@@ -10,6 +10,27 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+move() {
+   # This function is so that if packages or files have to be overwriten, the system does not crash while doing it, mostly for updating 
+   local folpath=$1
+   local files
+   local folders
+
+   
+   cd $folpath
+   
+   folders=$(find . -type d | tail -n +2 | cut -c2- | sed "s|^|$INSTALL_PATH|" | tr "\n" " ")
+
+   mkdir -p $folders
+   
+   files=$(find . -type f -o -type l ! -name 'postinst')
+
+   IFS=$'\n'
+   for file in $files; do
+       mv  $file $(echo $file | cut -c2- | sed "s|^|$INSTALL_PATH|g")
+   done
+   unset IFS
+}
 
 install_package() {
     local PACKAGE=$1
@@ -30,7 +51,8 @@ install_package() {
         tar -xpf $PACKAGE.tar.xz
 
         echo "Copying contents..."
-	cp -rp $PACKAGE/* $INSTALL_PATH
+        # Check the move function for details
+        move "$PACKAGE"
         #Check if postinst exists
          if [ -f $PACKAGE/postinst ]; then
             echo "Running Post Install Script..."
