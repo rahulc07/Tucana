@@ -28,6 +28,7 @@ move() {
        mv  $file $(echo $file | cut -c2- | sed "s|^|$INSTALL_PATH|g")
    done
    unset IFS
+   cd $INSTALL_PATH/var/cache/mercury
 }
 
 
