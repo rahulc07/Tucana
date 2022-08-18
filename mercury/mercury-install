@@ -22,12 +22,14 @@ move() {
    folders=$(find . -type d | tail -n +2 | cut -c2- | sed "s|^|$INSTALL_PATH|" | tr "\n" " ")
 
    mkdir -p $folders
-
-   files=$(find . -type f ! -name 'postinst')
    
+   files=$(find . -type f -o -type l ! -name 'postinst')
+
+   IFS=$'\n'
    for file in $files; do
        mv  $file $(echo $file | cut -c2- | sed "s|^|$INSTALL_PATH|g")
    done
+   unset IFS
 }
 
 install_package() {
