@@ -21,7 +21,7 @@ move() {
 
    mkdir -p $folders
    
-   files=$(find . -type f -o -type l ! -name 'postinst')
+   files=$(find . -type l -o -type f ! -name 'postinst')
 
    IFS=$'\n'
    for file in $files; do
