@@ -73,9 +73,7 @@ case $browser in
    :
   ;;
 esac
-echo "All Done with GUI setup, you can theme or install more apps later"
-echo "Once you are finsihed with customization, configs, and user setup, export your config using tucana-export-config or even build your own iso with tucana-build-iso"
-echo "Configs can be machine specific so automated setup can be achieved, or universal (Partition setup and bootloader setup required)"
+echo "All Done with GUI setup, you can theme or install more apps later"\
 echo "Reboot whenever you feel like it!"
    
   
