@@ -4,6 +4,14 @@ INSTALL_PATH=/mnt
 packages=$@
 # Built For Tucana Version 1.1
 # DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO_PATH  and uncommeting line 56 
+#   History
+# This version was made for Tucana 1.1 and supports overriding of programs as they are running
+# Theoretically, mv is a lot faster than cp on most systems, but here, to avoid 'Directory not empty' errors, 
+# The commands have to be made individiually, which wihtout multi-threading increases the install speed of bigger packages exponentially the more files there are
+# I will re-explore this after the rebuild for Tucana 1.2, probably with Multi-Threading, although that won't solve the problem for slower systems
+# Hence the reason why I reverted the change before the release of Tucana 1.1
+# If you still want to use this version you can change the install script and the mercury-install in the base image, or after install
+# Might be useful if you overrided your /etc/installed_package
 
 if [[ $EUID -ne 0 ]]; then
    echo "This package manager must be run as root" 
