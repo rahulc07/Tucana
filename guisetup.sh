@@ -73,7 +73,7 @@ case $browser in
    :
   ;;
 esac
-echo "All Done with GUI setup, you can theme or install more apps later"\
+echo "All Done with GUI setup, you can theme or install more apps later"
 echo "Reboot whenever you feel like it!"
    
   
