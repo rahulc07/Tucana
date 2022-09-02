@@ -1,5 +1,9 @@
 # Tucana Linux, A LFS based distro
 
+# ON HOLD
+**Tucana is now on hold hopefully temporarily, since school and life started back up now, my time is very limited, the workload and effort *should* level off around October.  Also with over 175 out of the 700 packages in the repo needing updates, the new release will probably take until late Oct. to finish with the entire build being scripted.  If you want to make contributions feel free to just reach out to me ore make a pull request
+
+
 ## Whats different?
 This is based on Linux from scratch 11.1, yes that linux from scratch. Following that is a by the book yet minimal BLFS install, with any desktop or GUI you can wish for.  The /usr/share/doc folder is basically empty (like it is with a lot of my other projects) and it uses less than 2GB of space! (With xfce) and it obeys to standards
 
