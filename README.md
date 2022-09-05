@@ -1,7 +1,7 @@
 # Tucana Linux, A LFS based distro
 
 # ON HOLD
-Tucana is now on hold hopefully temporarily, since school and life started back up now, my time is very limited, the workload and effort *should* level off around October.  Also with over 175 out of the 700 packages in the repo needing updates, the new release will probably take until late Oct. to finish with the entire build being scripted.  If you want to make contributions feel free to just reach out to me ore make a pull request
+Tucana is now on hold hopefully temporarily, since school and life started back up now, my time is very limited, the workload and effort *should* level off around October.  Also with over 175 out of the 700 packages in the repo needing updates, the new release will probably take until late Oct. to finish with the entire build being scripted.  If you want to make contributions feel free to just reach out to me or make a pull request
 
 Hopefully I can rebuild it with the entirely new toolchain (GCC 12.2, glibc 2.36, binutils 2.39) but lets see what happens.
 
