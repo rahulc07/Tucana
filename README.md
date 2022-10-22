@@ -1,9 +1,7 @@
 # Tucana Linux, A LFS based distro
 
-# ON HOLD
-Tucana is now on hold hopefully temporarily, since school and life started back up now, my time is very limited, the workload and effort *should* level off around October.  Also with over 175 out of the 700 packages in the repo needing updates, the new release will probably take until late Oct. to finish with the entire build being scripted.  If you want to make contributions feel free to just reach out to me or make a pull request
-
-Hopefully I can rebuild it with the entirely new toolchain (GCC 12.2, glibc 2.36, binutils 2.39) but lets see what happens.
+# Next Update
+Tucana 2.0 is scheduled to release on Oct 31st... with new cross-compilers a brand new toolchain, Gnome 43, Plasma 5.26,  Firefox 106 A Modularized base package, and lib32 packages (maybe wine and steam but i'm not making any promises). Mercury will also be part of the fun, with mercury-reinstall and mercury-search for searching and reinstalling packages, as well as local package install support.  Almost every package in the repo is getting an update, I will be testing upgrading from 1.1 -> 2.0 but it might require some special sauce.  Mark the date on your calender, because this is gonna be big
 
 
 ## Whats different?
