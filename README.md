@@ -1,7 +1,7 @@
 # Tucana Linux, A LFS based distro
 
 # Next Update
-Tucana 2.0 is scheduled to release on Oct 31st... with new cross-compilers a brand new toolchain(glibc 2.36 gcc 12.2.0, binutils 2.39, clang 15.0.3) with multilib support, Gnome 43, Plasma 5.26,  Firefox 106, a modularized base package, and lib32 packages (maybe wine and steam but i'm not making any promises). Mercury will also be part of the fun, with mercury-reinstall and mercury-search for searching and reinstalling packages, as well as local package install support.  Almost every package in the repo is getting an update, I will be testing upgrading from 1.1 -> 2.0 but it might require some special sauce.  Mark the date on your calender, because this is gonna be big!
+Tucana 2.0 is scheduled to release on Oct 31st... with new cross-compilers a brand new toolchain(glibc 2.36 gcc 12.2.0, binutils 2.39, clang 15.0.3 all with the latest kernel on Oct 31st) with multilib support, Gnome 43, Plasma 5.26,  Firefox 106, a modularized base package, and lib32 packages (maybe wine and steam but i'm not making any promises). Mercury will also be part of the fun, with mercury-reinstall and mercury-search for searching and reinstalling packages, as well as local package install support.  Almost every package in the repo is getting an update, I will be testing upgrading from 1.1 -> 2.0 but it might require some special sauce.  Mark the date on your calender, because this is gonna be big!
 
 
 ## Whats different?
