@@ -7,7 +7,7 @@ Edit: Tucana 2.0 will be coming out on the 31st but will have an ER mercury patc
 
 
 ## Whats different?
-This is based on Linux from scratch 11.1, yes that linux from scratch. Following that is a by the book yet minimal BLFS install, with any desktop or GUI you can wish for.  The /usr/share/doc folder is basically empty (like it is with a lot of my other projects) and it uses less than 2GB of space! (With xfce) and it obeys to standards
+This is based on Linux from scratch, yes that linux from scratch. Following that is a by the book yet minimal BLFS install, with any desktop or GUI you can wish for.  The /usr/share/doc folder is basically empty (like it is with a lot of my other projects) and it uses less than 2GB of space! (With xfce) and it obeys to standards
 
 ## Install????
 Check the wiki on the top bar
