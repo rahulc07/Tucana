@@ -1,0 +1,17 @@
+diff -Naur PackageKit-1.2.5/contrib/meson.build b/contrib/meson.build
+--- PackageKit-1.2.5/contrib/meson.build	2022-02-17 13:13:28.626211600 +0000
++++ b/contrib/meson.build	2022-10-30 00:14:23.329378575 +0000
+@@ -10,13 +10,6 @@
+   subdir('command-not-found')
+ endif
+ 
+-if get_option('bash_completion')
+-  bash_completion_dep = dependency('bash-completion', version: '>=2.0')
+-  install_data(
+-    'pkcon',
+-    install_dir: bash_completion_dep.get_pkgconfig_variable('completionsdir', define_variable: ['prefix', get_option('prefix')])
+-  )
+-endif
+ 
+ if get_option('cron')
+   subdir('cron')
