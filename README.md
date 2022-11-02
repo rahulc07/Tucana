@@ -5,6 +5,8 @@ Tucana 2.0 is scheduled to release on Oct 31st... with new cross-compilers a bra
 
 Edit: Tucana 2.0 will be coming out on the 31st but will have an ER mercury patch (just a untarrable file) to fix a crticial openssl bug on Nov 1st
 
+The entire release is rescheduled to Nov 3 because of life hitting me hard.
+
 
 ## Whats different?
 This is based on Linux from scratch, yes that linux from scratch. Following that is a by the book yet minimal BLFS install, with any desktop or GUI you can wish for.  The /usr/share/doc folder is basically empty (like it is with a lot of my other projects) and it uses less than 2GB of space! (With xfce) and it obeys to standards
