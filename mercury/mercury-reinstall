@@ -1,0 +1,109 @@
+#!/bin/bash
+REPO="http://192.168.1.143:88"
+INSTALL_PATH=/mnt
+packages=$@
+# Built For Tucana Version 2.0
+# DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO_PATH  and uncommeting the bash postinst line
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This package manager must be run as root" 
+   exit 1
+fi
+
+move() {
+   # This function is so that if packages or files have to be overwriten, the system does not crash while doing it, mostly for updating and reinstalling
+   local folpath=$1
+   local files
+   local folders
+
+   
+   cd $folpath
+   
+   folders=$(find . -type d | tail -n +2 | cut -c2- | sed "s|^|$INSTALL_PATH|" | tr "\n" " ")
+
+   mkdir -p $folders
+   
+   files=$(find . -type f -o -type l ! -name 'postinst')
+
+   IFS=$'\n'
+   for file in $files; do
+       mv  $file $(echo $file | cut -c2- | sed "s|^|$INSTALL_PATH|g")
+   done
+   unset IFS
+}
+
+install_package() {
+    local PACKAGE=$1
+    mkdir -p $INSTALL_PATH/var/cache/mercury
+    cd $INSTALL_PATH/var/cache/mercury
+    echo "$REPO/packages/$PACKAGE.tar.xz"
+    echo "Downloading $PACKAGE"
+
+    wget -O $INSTALL_PATH/var/cache/mercury/$PACKAGE.tar.xz $REPO/packages/$PACKAGE.tar.xz
+
+    echo "Installing $PACKAGE..."
+    echo "Extracting $PACKAGE..."
+    tar -xpf $PACKAGE.tar.xz
+
+    echo "Copying contents..."
+    # Check the move function for details
+    move "$PACKAGE"
+    #Check if postinst exists
+    if [ -f $PACKAGE/postinst ]; then
+      echo "Running Post Install Script..."
+      bash $PACKAGE/postinst 
+    fi
+    echo  "Removing Cache"
+    rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
+    fi
+}
+
+
+
+check_if_packages_exist() {
+
+# Make sure the root (actually inputed) packages exist, this check is repeated for the depends (I mess up some times with the depend files) 
+for package in ${packages[@]}
+do
+   if [[ $(cat $INSTALL_PATH/var/cache/mercury/available-packages | grep -x $package | wc -c) == 0 ]]
+   then
+           echo "$package was not found, exiting"
+           exit 1
+   fi  
+done
+
+}
+
+
+# Run the check function
+check_if_packages_exist
+
+
+numpackage=$(wc -w <<< $packages)
+# Basically the same thing but just for safety lol
+pkgnoline=$(tr "\n" " " <<< $packages)
+
+# Sanity check to make sure that all packages exist (See function for details)
+check_if_packages_exist
+
+
+if test $numpackage -ne 0; then
+ printf "\n\nPackages to be Reinstalled: $pkgnoline\n"
+ read -r -p "$numpackage packages are queued to be reinstall, would you like to continue? [Y/n] " confirmation
+
+ case $confirmation in
+      "" | Y | y)
+  echo "Continuing with install of $numpackage packages"
+  for package in ${packages[@]}
+  do
+      install_package "$package"
+  done
+
+  ;;
+   *)
+  echo "Aborting Invalid Input!"
+  ;;
+ esac
+ else 
+  printf "Nothing to do all packages are installed\n"
+fi

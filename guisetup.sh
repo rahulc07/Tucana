@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "1) GNOME 42"
-echo "2) Plasma 5.24.5"
+echo "1) GNOME 43"
+echo "2) Plasma 5.26.2"
 echo "3) XFCE 4"
 echo "4) i3wm"
 echo "5) IceWM"
@@ -74,7 +74,10 @@ case $browser in
   ;;
 esac
 echo "All Done with GUI setup, you can theme or install more apps later"
-echo "Reboot whenever you feel like it!"
+# Not yet
+#echo "Once you are finsihed with customization, configs, and user setup, export your config using tucana-export-config or even build your own iso with tucana-build-iso"
+#echo "Configs can be machine specific so automated setup can be achieved, or universal (Partition setup and bootloader setup required)"
+#echo "Reboot whenever you feel like it!"
    
   
   
