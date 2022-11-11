@@ -23,7 +23,8 @@ File an issue requesting the package, I will get to it as soon as possible, if i
 # Why no updates?
 With school starting soon, I might not be able to update Tucana as often, I will do my best and version 1.1 is basically finished at this point.  Once school starts I will be focusing my efforts towards Tucana-Build-Scripts (unreleased) which is a project to script the build of a Tucana system.  Without this updating will become a lot harder, especially since to support steam (lib32) and glibc 2.36 & binutils 2.39 will require a complete rebuild. 
 
-
+# Contributing
+I am always looking for contibuters, if you want to contribute in any way (graphic design, repo-hosting, building new packages) file an issue or a PR on Tucana-Build-Scripts (https://github.com/xXTeraXx/Tucana-Build-Scripts) 
 _________________________________________________________________________________________________________________________________________________________
 
 
