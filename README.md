@@ -1,11 +1,7 @@
 # Tucana Linux, A LFS based distro
 
-# Next Update
-Tucana 2.0 is scheduled to release on Oct 31st... with new cross-compilers a brand new toolchain(glibc 2.36 gcc 12.2.0, binutils 2.39, clang 15.0.3 all with the latest kernel on Oct 31st) with multilib support, Gnome 43, Plasma 5.26,  Firefox 106, a modularized base package, and lib32 packages (maybe wine and steam but i'm not making any promises). Mercury will also be part of the fun, with mercury-reinstall and mercury-search for searching and reinstalling packages, as well as local package install support.  Almost every package in the repo is getting an update, I will be testing upgrading from 1.1 -> 2.0 but it might require some special sauce.  Mark the date on your calender, because this is gonna be big!
-
-Edit: Tucana 2.0 will be coming out on the 31st but will have an ER mercury patch (just a untarrable file) to fix a crticial openssl bug on Nov 1st
-
-The entire release is rescheduled to Nov 3 because of life hitting me hard.
+# New package model after 2.0
+Although the releases have only been every 3-4 months, I have been keeping my personal repo up to date with the newest packages.  From the release of Tucana 2.0 onwards, update tars will be released, these will be a set of packages that I have updated throughout the week, most will be untested and I cannot guarantee the same quality as a full release.  The repos will also have to be resigned maually (script included).  These tars could have updates, or even new packages.  A full release with all of these tars, plus a level of guarantee that the system will install properly and work.  These releases will NOT include isos, most should install with the same iso.
 
 
 ## Whats different?
@@ -19,7 +15,7 @@ This distro uses the Mercury Package manager it is entirely coded in bash and ba
 
 Mercury can be used on any system for any project involving packages with depends.  It is a lot easier to make packages and is fast but minimal.  If you just need a package manager for LFS, feel free to use it!
 # The Package Mentality
-This is a Semi-Stable distro, it will update every 6 months 1 month before ubuntu (along with new LFS stable releases).  But some packages will NOT be locked.  Mainly Firefox, Chromium, The Kernel (LTS is avalible) and Mesa.  Along with some others if features are added 
+This is a semi-stable partially rolling distro. What I mean by that is there will be a tar released every week to update the stable repo, these tars will contain the newest packages avaliable (Built with Tucana-Build-Scripts) and would essentially make Tucana rolling-release, although these are not guaranteed to function properly.  For those who do not want that, the Stable repo will always be avaliable, and updating from stable-stable and latest-beta-stable is guaranteed to function after Tucana 2.0. For updating, check the issues and the wiki to make sure that there aren't any special commands/scripts that need to be run before the update
 
 # Requesting Packages
 File an issue requesting the package, I will get to it as soon as possible, if its a simple package, I will probably have binary avaliable the same day, if its more complex with many depends, it could take a little bit
@@ -27,15 +23,10 @@ File an issue requesting the package, I will get to it as soon as possible, if i
 # Why no updates?
 With school starting soon, I might not be able to update Tucana as often, I will do my best and version 1.1 is basically finished at this point.  Once school starts I will be focusing my efforts towards Tucana-Build-Scripts (unreleased) which is a project to script the build of a Tucana system.  Without this updating will become a lot harder, especially since to support steam (lib32) and glibc 2.36 & binutils 2.39 will require a complete rebuild. 
 
-
+# Contributing
+I am always looking for contibuters, if you want to contribute in any way (graphic design, repo-hosting, building new packages) file an issue or a PR on Tucana-Build-Scripts (https://github.com/xXTeraXx/Tucana-Build-Scripts) 
 _________________________________________________________________________________________________________________________________________________________
 
-Future/Upcoming:
-Yes, It is still on hold, just a place to document Ideas
-
-Packages: NGINX, Docker, OpenVPN(2&3),Handbrake,Blender,virt-viewer,x11vnc,chromium,openjdk(8,16-18)
-
-Repo Update Tars instead of downloading the whole repo, probably with a simple script to update your repo for you
 
 
 
