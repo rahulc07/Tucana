@@ -55,7 +55,6 @@ install_package() {
     fi
     echo  "Removing Cache"
     rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
-    fi
 }
 
 
