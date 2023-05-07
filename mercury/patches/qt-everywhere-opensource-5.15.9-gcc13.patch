@@ -1,0 +1,31 @@
+diff --color -Naur qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp patched/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp
+--- qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp	2023-03-23 10:00:13.000000000 -0400
++++ patched/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp	2023-05-07 13:28:03.944287421 -0400
+@@ -1,5 +1,8 @@
+ #pragma once
+ 
++#include <cstdint>
++
++
+ #include <mapbox/geometry/geometry.hpp>
+ #include <mapbox/geometry/point_arithmetic.hpp>
+ #include <mapbox/geometry/for_each_point.hpp>
+diff --color -Naur qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp patched/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp
+--- qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp	2023-03-23 10:00:13.000000000 -0400
++++ patched/qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp	2023-05-07 13:28:18.693721243 -0400
+@@ -1,4 +1,5 @@
+ #pragma once
++#include <cstdint>
+ 
+ #include <sstream>
+ #include <string>
+diff --color -Naur qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp patched/qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp
+--- qt-everywhere-src-5.15.9/qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp	2023-03-23 10:00:13.000000000 -0400
++++ patched/qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp	2023-05-07 13:28:57.999877330 -0400
+@@ -1,5 +1,5 @@
+ #pragma once
+-
++#include <cstdint>
+ #include <mbgl/util/variant.hpp>
+ 
+ namespace mbgl {
