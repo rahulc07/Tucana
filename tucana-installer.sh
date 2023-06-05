@@ -127,6 +127,8 @@ localedef -i tr_TR -f UTF-8 tr_TR.UTF-8
 localedef -i zh_CN -f GB18030 zh_CN.GB18030
 localedef -i zh_HK -f BIG5-HKSCS zh_HK.BIG5-HKSCS
 localedef -i zh_TW -f UTF-8 zh_TW.UTF-8"
+# Removing base and adding base-update to the installed package list (prevents catastrophic overriding of the /etc/shadow /etc/passwd and other essential files
+sed -i '1s/base/base-update/' /mnt/etc/installed_package
 echo "All Done"
 
 # Part 2 GUI Setup
