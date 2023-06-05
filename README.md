@@ -2,7 +2,7 @@
 
 
 ## Whats different?
-This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can yell you what you can or cannot do!
+This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do!
 
 ## Install????
 Check the wiki on the top bar
