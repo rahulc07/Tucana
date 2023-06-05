@@ -1,4 +1,4 @@
-# Tucana Linux, A LFS based distro
+# Tucana Linux
 
 
 ## Whats different?
