@@ -6,6 +6,15 @@ Sorry, no update this week (week of June 19th), currently setting up an auto-bui
 ## Whats different?
 This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do!
 
+## Sub Repos
+Tucana is split into multiple different sub-repositories, each focusing on a different part of the Tucana experience.  This main repo (xXTeraXx/Tucana) is focused on the releases, the mercury package manager and the wiki.  Here are the others in order of importance
+
+Tucana-Build-Scripts: https://github.com/xXTeraXx/Tucana-Build-Scripts
+Tucana-Autobuild (The update checker and autobuilder): https://github.com/xXTeraXx/Tucana-Autobuild
+Tucana-ISO Generator: https://github.com/xXTeraXx/tucana-iso
+Tucana's GTK Installer (WIP): https://github.com/xXTeraXx/tucana-installer
+
+
 ## Install????
 Check the wiki on the top bar
 
