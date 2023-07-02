@@ -2,8 +2,8 @@
 REPO="http://192.168.1.143:88"
 INSTALL_PATH=/mnt
 packages=$@
-# Built For Tucana Version 2.4
-# DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO.  Use the version in the repos
+# Built For Tucana Version 1.1
+# DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO_PATH.  Use the version in the repos
 
 if [[ $EUID -ne 0 ]]; then
    echo "This package manager must be run as root" 
@@ -42,26 +42,6 @@ install_package() {
     fi
 }
 
-depend_recurse() {
- local packagesii=$1
- local depends=""
- for PACKAGE in $packagesii; do
-    grep -r -x $PACKAGE $INSTALL_PATH/etc/installed_package &> /dev/null
-    if [[ $? -ne 0 ]]; then
-      depends="$depends $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$PACKAGE)"
-      depends=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$depends );
-    fi
- done
- packages="$packages $depends"
- echo $depends | grep -E '[Aa-Zz]' &> /dev/null
- if [[ $? == 0 ]]; then
-  depends=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<< $depends );
-  depend_recurse "$depends"
-  
- fi
-}
-
-
 get_depends() {
 
 
@@ -76,9 +56,19 @@ fi
 
 
 echo "Getting Dependencies"
-
-depend_recurse "$packages"
-
+until [ "$packages" == "$packageold" ] 
+do
+ packageold=$packages
+ for package in ${packages[@]}
+ do
+     if cat $INSTALL_PATH/etc/installed_package | grep -x $package >/dev/null; then
+	 :
+     else
+         packages="$packages $(cat $INSTALL_PATH/var/cache/mercury/depend/depend-$package)"
+         packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
+     fi
+ done
+done
 
 # Get rid of repeats (also in depend check)
 packages=$( awk 'BEGIN{RS=ORS=" "}!a[$0]++' <<<$packages );
