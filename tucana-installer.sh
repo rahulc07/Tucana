@@ -57,7 +57,7 @@ echo "Generating fstab"
 su -c "genfstab -U /mnt > /mnt/etc/fstab"
 
 echo "Bind Mounting temp filesystems"
-mount --bind /dev /mnt/dev
+mount --rbind /dev /mnt/dev
 mount --bind /proc /mnt/proc
 mount --bind /sys /mnt/sys
 
