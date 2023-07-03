@@ -2,7 +2,7 @@
 echo "1) GNOME 43"
 echo "2) Plasma 5.26.2"
 echo "3) XFCE 4"
-echo "4) i3wm"
+echo "4) Cinnamon"
 echo "5) IceWM"
 echo "6) twm, with xterm and xclock"
 read -r -p "Pick a GUI, [1-6] " de
@@ -23,10 +23,10 @@ case $de in
   sudo chroot /mnt /bin/bash -c "systemctl enable gdm"
    ;;
    '4')
-  echo "Installing with dmenu, xterm, and lightdm"
+  echo "Installing with gnome-terminal"
   sleep 1
   sudo chroot /mnt /bin/bash -c "sudo mercury-sync"
-  sudo chroot /mnt /bin/bash -c "sudo mercury-install lightdm i3-gaps lightdm xterm dmenu xorg"
+  sudo chroot /mnt /bin/bash -c "sudo mercury-install lightdm cinnamon gnome-terminal gnome-wallpapers"
   sudo chroot /mnt /bin/bash -c "sudo systemctl enable lightdm"
    ;;
    '5')
