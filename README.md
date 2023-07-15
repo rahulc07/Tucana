@@ -1,6 +1,5 @@
 # Tucana Linux
-**Tucana 2.3.2** 
-Sorry, no update this week (week of June 19th), currently setting up an auto-build system and making a new GTK installer.  2.3.3 Will be the next version! (of course, you could always build 2.3.2 using Tucana-Build-Scripts)
+
 
 
 ## Whats different?
