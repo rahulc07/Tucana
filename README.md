@@ -1,8 +1,7 @@
 # Tucana Linux
 
 # PACKAGE FREEZE
-In order to devote more time and effort towards the new gtk installer and mercury I am placing both Tucana-Build-Scripts and this repo on a temporary hold.  The next version will be 2.4 and should hopefully release by the end of July.
-
+In order to devote more time and effort towards the new gtk installer and mercury I am placing both Tucana-Build-Scripts and this repo on a temporary hold.  The next version will be 3.0 because of the toolchain updates.
 ## Whats different?
 This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do!
 
