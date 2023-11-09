@@ -89,6 +89,16 @@ fi
 sudo chroot /mnt /bin/bash -c "sudo systemctl enable NetworkManager"
 read -r -p "Hostname: " hostname
 echo "$hostname" > /mnt/etc/hostname
+cat > /mnt/etc/hosts << "EOF"
+# Begin /etc/hosts (network card version)
+
+127.0.0.1 localhost.localdomain $hostname
+::1 localhost
+
+# End /etc/hosts (network card version)
+EOF
+
+
 sudo sed -i "s/HOSTNAME/$hostname/" /mnt/etc/hosts
 echo "Creating Locales"
 sudo chroot /mnt /bin/bash -c "mkdir -pv /usr/lib/locale

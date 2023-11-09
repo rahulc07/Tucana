@@ -1,8 +1,25 @@
 #!/bin/bash
 REPO=http://192.168.1.143:88
 INSTALL_PATH=/mnt
-# Build For Tucana Version 1.0
+# Build For Tucana Version 3.0
+
+check_online() {
+
+   cd /tmp
+   wget $REPO/available-packages/sha256 &> /dev/null
+   if [[ $? != 0 ]]; then
+     echo "ERROR: Server not reachable or doesn't contain repo files"
+     exit 1
+   fi
+
+
+}
+
+check_online
+
+
 mkdir -p $INSTALL_PATH/var/cache/mercury/depend $INSTALL_PATH/etc
+mkdir -p $INSTALL_PATH/var/cache/mercury/file-list/
 touch $INSTALL_PATH/etc/installed_package
 cd $INSTALL_PATH/var/cache/mercury/depend
 echo "Getting Available Packages"

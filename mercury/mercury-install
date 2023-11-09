@@ -10,6 +10,27 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+check_online() {
+
+   cd /tmp
+   wget $REPO/available-packages/sha256 &> /dev/null
+   if [[ $? != 0 ]]; then
+     echo "ERROR: Server not reachable or doesn't contain repo files"
+     exit 1
+   fi
+
+
+}
+
+
+generate_file_list() {
+  local PACKAGE=$1
+  cd $INSTALL_PATH/var/cache/mercury/$PACKAGE
+  touch /var/cache/mercury/file-lists/$PACKAGE.list
+  # File lists are always generated for the root directory
+  echo "/$(find * -type f)" > /var/cache/mercury/file-lists/$PACKAGE.list
+
+}
 
 install_package() {
     local PACKAGE=$1
@@ -28,6 +49,9 @@ install_package() {
         echo "Installing $PACKAGE..."
         echo "Extracting $PACKAGE..."
         tar -xpf $PACKAGE.tar.xz
+
+        echo "Generating File list"
+        generate_file_list "$PACKAGE"
 
         echo "Copying contents..."
 	cp -rp $PACKAGE/* $INSTALL_PATH
@@ -104,6 +128,9 @@ do
 done
 
 }
+
+# Check if the server is online
+check_online
 
 
 # Run the check function

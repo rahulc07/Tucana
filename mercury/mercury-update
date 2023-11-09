@@ -8,6 +8,19 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+
+check_online() {
+
+   cd /tmp
+   wget $REPO/available-packages/sha256 &> /dev/null
+   if [[ $? != 0 ]]; then
+     echo "ERROR: Server not reachable or doesn't contain repo files"
+     exit 1
+   fi
+
+
+}
+
 move() {
    # This function is so that if packages or files have to be overwriten, the system does not crash while doing it, mostly for updating 
    local folpath=$1
@@ -54,6 +67,10 @@ update_package() {
         echo  "Removing Cache"
         rm -rf $INSTALL_PATH/var/cache/mercury/$PACKAGE*
 }
+
+# Check Online
+check_online
+
 # Get all the available updates
 updates=$(diff $INSTALL_PATH/var/cache/mercury/current $INSTALL_PATH/var/cache/mercury/sha256|grep ">"|cut -c 3- | cut -c67- | sed 's|.tar.xz||g')
 

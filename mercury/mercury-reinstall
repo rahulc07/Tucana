@@ -2,13 +2,24 @@
 REPO="http://192.168.1.143:88"
 INSTALL_PATH=/mnt
 packages=$@
-# Built For Tucana Version 2.0
+# Built For Tucana Version 3.0
 # DO NOT Use this version (git) on an actual tucana system without changing the INSTALL_PATH   to /  and the REPO_PATH  and uncommeting the bash postinst line
 
 if [[ $EUID -ne 0 ]]; then
    echo "This package manager must be run as root" 
    exit 1
 fi
+
+check_online() {
+
+   cd /tmp
+   wget $REPO/available-packages/sha256 &> /dev/null
+   if [[ $? != 0 ]]; then
+     echo "ERROR: Server not reachable or doesn't contain repo files"
+     exit 1
+   fi
+}
+
 
 move() {
    # This function is so that if packages or files have to be overwriten, the system does not crash while doing it, mostly for updating and reinstalling
@@ -73,7 +84,8 @@ done
 
 }
 
-
+# Check online
+check_online
 # Run the check function
 check_if_packages_exist
 
