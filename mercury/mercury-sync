@@ -19,7 +19,7 @@ check_online
 
 
 mkdir -p $INSTALL_PATH/var/cache/mercury/depend $INSTALL_PATH/etc
-mkdir -p $INSTALL_PATH/var/cache/mercury/file-list/
+mkdir -p $INSTALL_PATH/var/cache/mercury/file-lists/
 touch $INSTALL_PATH/etc/installed_package
 cd $INSTALL_PATH/var/cache/mercury/depend
 echo "Getting Available Packages"

@@ -26,9 +26,10 @@ check_online() {
 generate_file_list() {
   local PACKAGE=$1
   cd $INSTALL_PATH/var/cache/mercury/$PACKAGE
-  touch /var/cache/mercury/file-lists/$PACKAGE.list
+  touch $INSTALL_PATH/var/cache/mercury/file-lists/$PACKAGE.list
   # File lists are always generated for the root directory
   echo "/$(find * -type f)" > /var/cache/mercury/file-lists/$PACKAGE.list
+  cd -
 
 }
 
