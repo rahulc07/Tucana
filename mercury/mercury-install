@@ -171,7 +171,7 @@ if test $numpackage -ne 0; then
   do
       install_package "$package"
   done
-  postinst
+  #postinst
 
   ;;
    *)
