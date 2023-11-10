@@ -33,6 +33,15 @@ generate_file_list() {
 
 }
 
+postinst() {
+  if [[ ! $POSTINST ]]; then
+      return 0
+  fi
+  for PACKAGE in $POSTINST; do
+      bash /tmp/$PACKAGE-postinst
+  done
+}
+
 install_package() {
     local PACKAGE=$1
     # This check is mostly redundant since the offical release of version 1.0, but just incase there is a special case that the remove already installed packages loop doesn't get, I am leaving this in. This can be removed to reduce line count
@@ -58,8 +67,9 @@ install_package() {
 	cp -rp $PACKAGE/* $INSTALL_PATH
         #Check if postinst exists
          if [ -f $PACKAGE/postinst ]; then
-            echo "Running Post Install Script..."
-            # bash $PACKAGE/postinst 
+            # Save the post installs to run later 
+            cp $PACKAGE/postinst /tmp/$PACKAGE-postinst
+            POSTINST="$POSTINST $PACKAGE"
          fi
         echo $PACKAGE >> $INSTALL_PATH/etc/installed_package
         echo  "Removing Cache"
@@ -161,6 +171,7 @@ if test $numpackage -ne 0; then
   do
       install_package "$package"
   done
+  postinst
 
   ;;
    *)
