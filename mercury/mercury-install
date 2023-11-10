@@ -29,7 +29,7 @@ generate_file_list() {
   touch $INSTALL_PATH/var/cache/mercury/file-lists/$PACKAGE.list
   # File lists are always generated for the root directory
   find * -type f | sed 's|^|/|g' > $INSTALL_PATH/var/cache/mercury/file-lists/$PACKAGE.list
-  cd -
+  cd $INSTALL_PATH/var/cache/mercury
 
 }
 
