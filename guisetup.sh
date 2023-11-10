@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "1) GNOME 43"
-echo "2) Plasma 5.26.2"
+echo "1) GNOME 45"
+echo "2) Plasma 5.27.9"
 echo "3) XFCE 4"
 echo "4) Cinnamon"
 echo "5) IceWM"
@@ -14,8 +14,8 @@ case $de in
   ;;
    '2')
   sudo chroot /mnt /bin/bash -c "sudo mercury-sync"
-  sudo chroot /mnt /bin/bash -c "mercury-install lightdm plasma-desktop-full"
-  sudo chroot /mnt /bin/bash -c "systemctl enable lightdm"
+  sudo chroot /mnt /bin/bash -c "mercury-install sddm plasma-desktop-full"
+  sudo chroot /mnt /bin/bash -c "systemctl enable sddm"
    ;;
    '1')
   sudo chroot /mnt /bin/bash -c "sudo mercury-sync"
