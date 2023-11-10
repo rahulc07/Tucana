@@ -38,6 +38,7 @@ postinst() {
       return 0
   fi
   for PACKAGE in $POSTINST; do
+      echo "Running $PACKAGE Post install"
       bash /tmp/$PACKAGE-postinst
   done
 }
