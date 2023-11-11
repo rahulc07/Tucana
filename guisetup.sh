@@ -26,7 +26,7 @@ case $de in
   echo "Installing with gnome-terminal"
   sleep 1
   sudo chroot /mnt /bin/bash -c "sudo mercury-sync"
-  sudo chroot /mnt /bin/bash -c "sudo mercury-install lightdm cinnamon gnome-terminal gnome-wallpapers"
+  sudo chroot /mnt /bin/bash -c "sudo mercury-install lightdm cinnamon gnome-terminal gnome-backgrounds"
   sudo chroot /mnt /bin/bash -c "sudo systemctl enable lightdm"
    ;;
    '5')
