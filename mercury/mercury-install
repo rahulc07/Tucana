@@ -141,6 +141,20 @@ done
 
 }
 
+check_for_flags() {
+  for package in $packages; do
+    if [[ $package == --y ]]; then
+      NO_CONFIRM="true"
+      packages=$(sed 's/--y//g' <<< $packages)
+    fi
+  done
+
+
+}
+
+# Check for mercury flags
+check_for_flags
+
 # Check if the server is online
 check_online
 
@@ -162,7 +176,7 @@ check_if_packages_exist
 
 
 # Literally just for calamares
-if [[ $NO_CONFIRM == true ]]; then
+if [[ $NO_CONFIRM == "true" ]]; then
   for package in ${packages[@]}; do
         install_package "$package"
   done
