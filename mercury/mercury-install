@@ -161,6 +161,15 @@ pkgnoline=$(tr "\n" " " <<< $packages)
 check_if_packages_exist
 
 
+# Literally just for calamares
+if [[ $NO_CONFIRM == true ]]; then
+  for package in ${packages[@]}; do
+        install_package "$package"
+  done
+  exit 0
+fi
+
+
 if test $numpackage -ne 0; then
  printf "\n\nPackages to be installed: $pkgnoline\n"
  read -r -p "$numpackage packages are queued to install, would you like to continue? [Y/n] " confirmation
