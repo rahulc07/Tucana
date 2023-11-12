@@ -180,6 +180,7 @@ if [[ $NO_CONFIRM == "true" ]]; then
   for package in ${packages[@]}; do
         install_package "$package"
   done
+  #postinst
   exit 0
 fi
 
