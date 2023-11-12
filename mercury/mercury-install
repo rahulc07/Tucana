@@ -162,15 +162,13 @@ check_if_packages_exist
 
 
 # Literally just for calamares
-# Check to see if --y has been passed
-for package in $@; do
-  if [[ $package == --y ]]; then
-     packages=$(sed 's/--y //g' <<< $packages)
-     for package in ${packages[@]}; do
+if [[ $NO_CONFIRM == true ]]; then
+  for package in ${packages[@]}; do
         install_package "$package"
-     done
-  fi
-done
+  done
+  exit 0
+fi
+
 
 if test $numpackage -ne 0; then
  printf "\n\nPackages to be installed: $pkgnoline\n"
