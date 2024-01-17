@@ -2,6 +2,9 @@
 ## Whats different?
 This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do!
 
+# Schedule
+Tucana is on a January June/July Release schedule with periodic 'point' updates throughout.  Tucana-Build-Scripts however is rolling and will always be up to date, so if you need the latest and greatest build the packages from there using Tucana-Autobuild
+
 ## Sub Repos
 Tucana is split into multiple different sub-repositories, each focusing on a different part of the Tucana experience.  This main repo (xXTeraXx/Tucana) is focused on the releases, the mercury package manager and the wiki.  Here are the others in order of importance
 
