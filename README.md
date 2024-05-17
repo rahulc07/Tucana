@@ -5,6 +5,13 @@ This is based on Linux from scratch, yes that linux from scratch.  Although nowa
 # Schedule
 Tucana is on a January June/July Release schedule with periodic 'point' updates throughout.  Tucana-Build-Scripts however is rolling and will always be up to date, so if you need the latest and greatest build the packages from there using Tucana-Autobuild
 
+Please See Below for the currenct release schedule:
+3.1 Package Lock: May 30th
+3.1-p1 - June 4th
+3.1-p2 - June 10th
+3.1-release - June 14th
+
+
 ## Sub Repos
 Tucana is split into multiple different sub-repositories, each focusing on a different part of the Tucana experience.  This main repo (xXTeraXx/Tucana) is focused on the releases, the mercury package manager and the wiki.  Here are the others in order of importance
 
