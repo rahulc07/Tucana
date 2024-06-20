@@ -1,0 +1,19 @@
+diff -Naur qt-everywhere-src-5.15.14-og/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h qt-everywhere-src-5.15.14/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h
+--- qt-everywhere-src-5.15.14-og/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h	2024-05-08 05:14:45.000000000 +0000
++++ qt-everywhere-src-5.15.14/qtlocation/src/3rdparty/mapbox-gl-native/deps/rapidjson/1.1.0/include/rapidjson/document.h	2024-06-20 04:02:32.621236063 +0000
+@@ -316,7 +316,6 @@
+ 
+     GenericStringRef(const GenericStringRef& rhs) : s(rhs.s), length(rhs.length) {}
+ 
+-    GenericStringRef& operator=(const GenericStringRef& rhs) { s = rhs.s; length = rhs.length; }
+ 
+     //! implicit conversion to plain CharType pointer
+     operator const Ch *() const { return s; }
+@@ -328,6 +327,7 @@
+     //! Disallow construction from non-const array
+     template<SizeType N>
+     GenericStringRef(CharType (&str)[N]) /* = delete */;
++    GenericStringRef& operator=(const GenericStringRef& rhs);
+ };
+ 
+ //! Mark a character pointer as constant string
