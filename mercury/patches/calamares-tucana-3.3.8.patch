@@ -1,0 +1,191 @@
+diff -Naur --color calamares-3.3.8/src/modules/bootstrap/bootstrap.conf calamares-3.3.8-tucana/src/modules/bootstrap/bootstrap.conf
+--- calamares-3.3.8/src/modules/bootstrap/bootstrap.conf	1969-12-31 19:00:00.000000000 -0500
++++ calamares-3.3.8-tucana/src/modules/bootstrap/bootstrap.conf	2024-08-02 11:45:01.025894513 -0400
+@@ -0,0 +1,7 @@
++# SPDX-FileCopyrightText: no
++# SPDX-License-Identifier: CC0-1.0
++#
++# This is a dummy (example) module for a Python Job Module.
++#
++# The code is the documentation for the configuration file.
++# THis is not used, everything is hard coded because it's Tucana only
+diff -Naur --color calamares-3.3.8/src/modules/bootstrap/main.py calamares-3.3.8-tucana/src/modules/bootstrap/main.py
+--- calamares-3.3.8/src/modules/bootstrap/main.py	1969-12-31 19:00:00.000000000 -0500
++++ calamares-3.3.8-tucana/src/modules/bootstrap/main.py	2024-08-02 21:36:02.121579273 -0400
+@@ -0,0 +1,80 @@
++from libcalamares.utils import check_target_env_call
++import libcalamares
++import os
++import shutil
++import subprocess
++
++class TucanaBootstrap:
++    def bootstrap(self):
++        # Define the Tucana repository URL and file names
++        tucana_repo_url = "https://github.com/xXTeraXx/Tucana.git"
++        mercury_programs = ["mercury-install", "mercury-sync"]
++
++        # I don't know what the default path is or how to get it, hopefully it's mnt?
++        calamares_chroot_path = libcalamares.globalstorage.value("rootMountPoint")
++
++        # Clone the Tucana repository
++        self.clone_tucana_repo(tucana_repo_url)
++        # Update INSTALL_PATH variable in the scripts
++        self.update_install_path(mercury_programs, calamares_chroot_path)
++        # Get the repo
++        repo = subprocess.run("/usr/bin/repochooser", capture_output=True, text=True, shell=True).stdout.strip()
++        self.update_repo_url_prebase(mercury_programs, repo)
++
++        # Run mercury-sync and mercury install commands
++        self.run_mercury(calamares_chroot_path)
++        mercury_programs.append("mercury-update")
++        self.update_repo_url_postbase(mercury_programs, calamares_chroot_path, repo)
++
++    def clone_tucana_repo(self, repo_url):
++        # Clone Tucana repository
++        subprocess.run(['git', 'clone', repo_url, '/tmp/Tucana'])
++
++    def update_install_path(self, scripts, chroot_path):
++        # Update INSTALL_PATH variable in Tucana scripts
++        for script in scripts:
++            script_path = f'/tmp/Tucana/mercury/{script}'
++            with open(script_path, 'r') as f:
++                script_content = f.read()
++                updated_content = script_content.replace("INSTALL_PATH=/mnt", f"INSTALL_PATH={chroot_path}")
++            with open(script_path, 'w') as f:
++                f.write(updated_content)
++
++    def update_repo_url_prebase(self, scripts, repo_url):
++        # Update INSTALL_PATH variable in Tucana scripts
++        for script in scripts:
++            script_path = f'/tmp/Tucana/mercury/{script}'
++            with open(script_path, 'r') as f:
++                script_content = f.read()
++                updated_content = script_content.replace('REPO="http://192.168.1.143:88"', f'REPO="{repo_url}"')
++            with open(script_path, 'w') as f:
++                f.write(updated_content)
++
++    def update_repo_url_postbase(self, scripts, chroot_path, repo_url):
++        # Update INSTALL_PATH variable in Tucana scripts
++        for script in scripts:
++            script_path = f'{chroot_path}/usr/bin/{script}'
++            with open(script_path, 'r') as f:
++                script_content = f.read()
++                updated_content = script_content.replace('REPO="http://192.168.1.143:88"', f'REPO="{repo_url}"')
++            with open(script_path, 'w') as f:
++                f.write(updated_content)
++
++    def run_mercury(self, chroot_path):
++        # Run mercury-sync and mercury install commands
++        subprocess.run(['/bin/bash', '-c', f'cd /tmp/Tucana/mercury && ./mercury-sync'])
++        subprocess.run(['/bin/bash', '-c', f'cd /tmp/Tucana/mercury && printf "y\n" | ./mercury-install base'])
++        # Network setup
++        file = open(f'{chroot_path}/etc/resolv.conf', "w")
++        file.write("nameserver 1.1.1.1")
++        file.close()
++        # Setup basic systemd services
++        check_target_env_call(["systemctl", "preset-all"])
++        # pwconv
++        check_target_env_call(["pwconv"])
++        # Make-ca
++        check_target_env_call(["make-ca", "-g", "--force"])
++
++def run():
++    TucanaBootstrap().bootstrap()
++    return None
+diff -Naur --color calamares-3.3.8/src/modules/bootstrap/module.desc calamares-3.3.8-tucana/src/modules/bootstrap/module.desc
+--- calamares-3.3.8/src/modules/bootstrap/module.desc	1969-12-31 19:00:00.000000000 -0500
++++ calamares-3.3.8-tucana/src/modules/bootstrap/module.desc	2024-08-02 11:45:01.025894513 -0400
+@@ -0,0 +1,9 @@
++# SPDX-FileCopyrightText: no
++# SPDX-License-Identifier: CC0-1.0
++# Module metadata file for bootstrap python jobmodule
++# Syntax is YAML 1.2
++---
++type:       "job"
++name:       "bootstrap"
++interface:  "python"
++script:     "main.py"
+diff -Naur --color calamares-3.3.8/src/modules/displaymanager/main.py calamares-3.3.8-tucana/src/modules/displaymanager/main.py
+--- calamares-3.3.8/src/modules/displaymanager/main.py	2024-07-03 17:05:30.000000000 -0400
++++ calamares-3.3.8-tucana/src/modules/displaymanager/main.py	2024-08-02 11:45:01.025894513 -0400
+@@ -495,7 +495,7 @@
+         pass
+ 
+     def greeter_setup(self):
+-        pass
++        libcalamares.utils.target_env_call(["systemctl", "enable", "gdm"])
+ 
+ 
+ class DMlxdm(DisplayManager):
+@@ -694,6 +694,7 @@
+                 )
+             )
+             libcalamares.utils.debug("{!s} configured as greeter.".format(greeter))
++            libcalamares.utils.target_env_call(["systemctl", "enable", "lightdm"])
+         else:
+             libcalamares.utils.error("No greeter found at all, preferred {!s}".format(self.preferred_greeters))
+             return (
+@@ -789,7 +790,7 @@
+         pass
+ 
+     def greeter_setup(self):
+-        pass
++        libcalamares.utils.target_env_call(["systemctl", "enable", "sddm"])
+ 
+ 
+ class DMgreetd(DisplayManager):
+diff -Naur --color calamares-3.3.8/src/modules/packages/main.py calamares-3.3.8-tucana/src/modules/packages/main.py
+--- calamares-3.3.8/src/modules/packages/main.py	2024-07-03 17:05:30.000000000 -0400
++++ calamares-3.3.8-tucana/src/modules/packages/main.py	2024-08-02 11:45:01.025894513 -0400
+@@ -398,6 +398,23 @@
+     def update_system(self):
+         check_target_env_call(["luet", "upgrade", "-y"])
+ 
++class PMMercury(PackageManager):
++    backend = "mercury"
++
++    def install(self, pkgs,from_local=False):
++        check_target_env_call(["mercury-install", "--y"] + pkgs)
++
++    def remove(self, pkgs):
++        # Removing is not implemented yet
++        pass
++        #check_target_env_call(["mercury-install", "--y"] + pkgs)
++
++    def update_db(self):
++        check_target_env_call(["mercury-sync"])
++
++    def update_system(self):
++        check_target_env_call(["mercury-update"])
++
+ 
+ class PMPackageKit(PackageManager):
+     backend = "packagekit"
+diff -Naur --color calamares-3.3.8/src/modules/packages/packages.conf calamares-3.3.8-tucana/src/modules/packages/packages.conf
+--- calamares-3.3.8/src/modules/packages/packages.conf	2024-07-03 17:05:30.000000000 -0400
++++ calamares-3.3.8-tucana/src/modules/packages/packages.conf	2024-08-02 11:45:01.026894605 -0400
+@@ -36,7 +36,7 @@
+ # Not actually a package manager, but suitable for testing:
+ #  - dummy       - Dummy manager, only logs
+ #
+-backend: dummy
++backend: mercury
+ 
+ #
+ # Often package installation needs an internet connection.
+@@ -204,11 +204,6 @@
+ #
+ operations:
+   - install:
+-    - vi
+-    - vi-${LOCALE}
+-    - wget
+-    - binutils
+-  - remove:
+-    - vi
+-    - wget
+-    - binutils
++    - base
++    - linux-tucana
++    - network-manager
