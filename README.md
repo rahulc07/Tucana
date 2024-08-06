@@ -3,13 +3,7 @@
 This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is that YOU host the Repos, giving you the ultimate level of control over your PC.  The Repos are also super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do!
 
 # Schedule
-Tucana is on a January June/July Release schedule with periodic 'point' updates throughout.  Tucana-Build-Scripts however is rolling and will always be up to date, so if you need the latest and greatest build the packages from there using Tucana-Autobuild
-
-Please See Below for the currenct release schedule:
-3.1 Package Lock: May 30th
-3.1-p1 - June 4th
-3.1-p2 - June 10th
-3.1-release - June 14th
+Tucana is on a January June/July Release schedule with periodic 'point' updates throughout.  Tucana-Build-Scripts however is rolling and will always be up to date, so if you need the latest and greatest build the packages from there using Tucana-Autobuild or Tucana-Build-Scripts
 
 
 ## Sub Repos
@@ -18,7 +12,8 @@ Tucana is split into multiple different sub-repositories, each focusing on a dif
 Tucana-Build-Scripts: https://github.com/rahulc07/Tucana-Build-Scripts  
 Tucana-Autobuild (The update checker and autobuilder): https://github.com/rahulc07/Tucana-Autobuild  
 Tucana-ISO Generator: https://github.com/rahulc07/tucana-iso  
-Tucana's GTK Installer (WIP): https://github.com/rahulc07/tucana-installer  
+Tucana's Calamares Configs (need the patch in patches): https://github.com/rahulc07/calamares-configs
+Cross Compilers Build Scripts: https://github.com/rahulc07/cross-sh-tucana
 
 
 ## Install????
