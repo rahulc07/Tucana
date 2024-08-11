@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "1) GNOME 45"
-echo "2) Plasma 5.27.9"
+echo "1) GNOME 46"
+echo "2) Plasma 6.1.4"
 echo "3) XFCE 4"
 echo "4) Cinnamon"
 echo "5) IceWM"
