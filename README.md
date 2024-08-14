@@ -1,9 +1,18 @@
+A Linux Distro Built For Customization
+
 
 ## Whats different?
 This is based on Linux from scratch, yes that linux from scratch.  Although nowadays, Tucana deviates a lot with the addition of lib32 libraries, Vulkan, Wine and other things.  The main selling point is the ease of customization and redistribution. With Tucana you can host your own repos (or hopefully soon not have to), have custom patched packages and in the end bundle it up into a neat ISO that is easy to distribute. The Repos are super easy to host and add too (check the wiki), so you can add theming packages, personalized/patched packages or whatever your heart desires, with infinite possibilites no one can tell you what you can or cannot do! Once you finish use Tucana-Iso-Generator to generate an ISO for your customizations and distribute it.
 
 Essentially Tucana is a Build-Kit where you can share you customizations with anyone who will look at them, think of it like a mega version of your dotfiles but with the ability to customize and build you own packages if you need a kernel patch, non-free software, or if you want to build a purpose built distro like [Minecraft OS](https:/github.com/rahulc07/mcos)
 
+
+## Acknowledgements
+
+Thanks to Oregon State University's Open Source Lab for our first repository mirror @ https://ftp2.osuosl.org/pub/tucana-linux
+
+Please check Tucana Build Scripts for more acknowledgements.
+Hopefully many more are to come
 # Schedule
 Tucana is on a January June/July Release schedule with periodic 'point' updates throughout.  Tucana-Build-Scripts however is rolling and will always be up to date, so if you need the latest and greatest build the packages from there using Tucana-Autobuild or Tucana-Build-Scripts
 
