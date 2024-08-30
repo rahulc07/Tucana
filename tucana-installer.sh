@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "DEPRECATED"
 echo "Welcome to the Tucana Installer"
 sleep 1
 sudo lsblk
