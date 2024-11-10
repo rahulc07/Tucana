@@ -20,7 +20,8 @@ Tucana is on a January June/July Release schedule with periodic 'point' updates 
 ## Sub Repos
 Tucana is split into multiple different sub-repositories, each focusing on a different part of the Tucana experience.  This main repo (xXTeraXx/Tucana) is focused on the releases, the mercury package manager and the wiki.  Here are the others in order of importance
 
-Tucana-Build-Scripts: https://github.com/rahulc07/Tucana-Build-Scripts  
+Tucana-Build-Scripts: https://github.com/rahulc07/Tucana-Build-Scripts
+ALPHA: Neptune (The new package manager): https://github.com/Tucana-Linux/Tucana-Build-Scripts
 Tucana-Autobuild (The update checker and autobuilder): https://github.com/rahulc07/Tucana-Autobuild  
 Tucana-ISO Generator: https://github.com/rahulc07/tucana-iso  
 Tucana's Calamares Configs (need the patch in patches): https://github.com/rahulc07/calamares-configs
