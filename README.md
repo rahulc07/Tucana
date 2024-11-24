@@ -24,7 +24,7 @@ Tucana-Build-Scripts: https://github.com/rahulc07/Tucana-Build-Scripts
 ALPHA: Neptune (The new package manager): https://github.com/Tucana-Linux/neptune
 Tucana-Autobuild (The update checker and autobuilder): https://github.com/rahulc07/Tucana-Autobuild  
 Tucana-ISO Generator: https://github.com/rahulc07/tucana-iso  
-Tucana's Calamares Configs (need the patch in patches): https://github.com/rahulc07/calamares-configs
+Tucana's Calamares Configs (need the patch in patches): https://github.com/Tucana-Linux/calamares-configs
 Cross Compilers Build Scripts: https://github.com/rahulc07/cross-sh-tucana
 
 
